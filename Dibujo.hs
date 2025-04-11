@@ -120,4 +120,16 @@ anyDib p = foldDib
             (||)
 
 contieneFigura :: Eq a => a -> Dibujo a -> Bool
-contieneFigura a = anyDib (==a)    
+contieneFigura a = anyDib (==a) 
+
+eliminarRotaciones360 :: Dibujo a -> Dibujo a
+eliminarRotaciones360 = foldDib
+    basica          -- Caso Basica: no hay que hacer nada
+    (\d -> case d of  -- Caso Rotar: verificar si hay 3 rotares anidadas
+        Rotar (Rotar (Rotar (Rotar d'))) -> d'  -- Elimina las 4 rotares
+        _ -> Rotar d)  -- Si no, mantiene la rotación
+    rotar45         -- Caso Rotar45: no afecta a las rotaciones de 90°
+    espejar         -- Caso Espejar: no afecta
+    apilar          -- Caso Apilar: reconstruye con los subdibujos procesados
+    juntar          -- Caso Juntar: igual que Apilar
+    encimar         -- Caso Encimar: igual   
