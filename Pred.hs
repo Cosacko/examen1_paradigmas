@@ -90,3 +90,12 @@ checkSuperfluo d =
      then Right d
      else Left errores
 
+profundidad :: Dibujo a -> Int
+profundidad = foldDib
+    (\_ -> 0)       -- Basica: profundidad 0
+    (\d -> 1 + d)   -- Rotar: aumenta la profundidad
+    (\d -> 1 + d)   -- Rotar45: igual que Rotar
+    (\d -> 1 + d)   -- Espejar: igual
+    (\_ _ d1 d2 -> max d1 d2)  -- Apilar: toma el máximo de los subdibujos
+    (\_ _ d1 d2 -> max d1 d2)  -- Juntar: igual
+    (\d1 d2 -> max d1 d2)      -- Encimar: igual
